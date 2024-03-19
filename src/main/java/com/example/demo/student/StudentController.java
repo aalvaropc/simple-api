@@ -1,4 +1,5 @@
 package com.example.demo.student;
+
 import com.example.demo.student.Student;
 
 
@@ -11,7 +12,7 @@ import java.time.Month;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api")
+@RequestMapping(path = "api/students")
 public class StudentController {
     private StudentService studentService;
 
@@ -20,13 +21,28 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/students")
-    public List<Student> getStudents(){
-        return  studentService.getStudents();
+    @GetMapping
+    public List<Student> getStudents() {
+        return studentService.getStudents();
     }
 
-    @PostMapping("/students")
-    public void postStudents(@RequestBody Student student){
-       studentService.addStudent(student);
+    @PostMapping
+    public void postStudents(@RequestBody Student student) {
+        studentService.addStudent(student);
     }
+
+    @DeleteMapping(path = "{studentId}")
+    public void deleteStudent(@PathVariable("studentId") Long studentId) {
+        studentService.deleteStudent(studentId);
+    }
+
+    @PutMapping(path = "{studentId}")
+    public void updateStudent(
+            @PathVariable("studentId") Long studentId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email) {
+        studentService.updateStudent(studentId, name, email);
+    }
+
+
 }
